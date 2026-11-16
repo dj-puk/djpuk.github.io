@@ -102,6 +102,130 @@
       gap: 12px;
     }
 
+    /* Language selector */
+    .lang-wrap { position: relative; }
+    .lang-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      height: 40px;
+      padding: 0 12px;
+      border-radius: 24px;
+      background: rgba(16, 16, 20, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1.5px solid rgba(255, 30, 56, 0.35);
+      color: var(--white);
+      cursor: pointer;
+      font-family: var(--ff-mono);
+      font-size: .68rem;
+      letter-spacing: .08em;
+      transition: all .3s ease;
+    }
+    .lang-btn:hover,
+    .lang-wrap.open .lang-btn {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 18px rgba(255, 30, 56, 0.3);
+    }
+    .lang-icon { flex-shrink: 0; }
+    .lang-arrow {
+      width: 6px;
+      height: 6px;
+      border-right: 1px solid currentColor;
+      border-bottom: 1px solid currentColor;
+      transform: rotate(45deg) translateY(-2px);
+      transition: transform .2s ease;
+    }
+    .lang-wrap.open .lang-arrow { transform: rotate(225deg) translate(-1px, -1px); }
+    .lang-dropdown {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      width: 300px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(18, 18, 24, .98);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, .55);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity .2s ease, transform .2s ease, visibility .2s;
+      z-index: 110;
+    }
+    .lang-wrap.open .lang-dropdown {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    .lang-dropdown-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      color: var(--white);
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+    }
+    .lang-count-badge {
+      color: var(--accent);
+      font-size: .58rem;
+      white-space: nowrap;
+    }
+    .lang-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      max-height: 330px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .lang-grid::-webkit-scrollbar { width: 4px; }
+    .lang-grid::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+    .lang-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 9px 10px;
+      border: 1px solid transparent;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .02);
+      color: var(--white);
+      cursor: pointer;
+      font-family: var(--ff-body);
+      font-size: .78rem;
+      text-align: left;
+      transition: all .2s ease;
+    }
+    .lang-item:hover,
+    .lang-item.active {
+      background: rgba(255, 30, 56, .18);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .lang-item .flag { font-size: 1.1rem; line-height: 1; }
+    .lang-item .name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Keep Google's widget and translation overlays invisible. */
+    body > iframe,
+    iframe.skiptranslate,
+    iframe[class*="skiptranslate"],
+    .goog-te-banner-frame,
+    .goog-tooltip,
+    .goog-text-highlight,
+    #goog-gt-tt,
+    #google_translate_element {
+      display: none !important;
+    }
+    body { top: 0 !important; }
+
     /* BGM Button giống Double H */
     .bgm-btn {
       display: inline-flex;
@@ -895,6 +1019,25 @@
         <span class="bgm-text">MUSIC</span>
       </button>
 
+      <div class="lang-wrap" id="langWrap">
+        <button class="lang-btn" id="langBtn" type="button" aria-label="Chọn ngôn ngữ" title="Dịch trang (20 ngôn ngữ)">
+          <svg class="lang-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M2 12h20"></path>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+          </svg>
+          <span id="langCurr">VI</span>
+          <span class="lang-arrow"></span>
+        </button>
+        <div class="lang-dropdown" id="langDropdown" role="menu">
+          <div class="lang-dropdown-header">
+            <span>Dịch trang / Translate</span>
+            <span class="lang-count-badge">20 ngôn ngữ</span>
+          </div>
+          <div class="lang-grid" id="langGrid"></div>
+        </div>
+      </div>
+
       <a href="#booking" class="nav-booking-btn">
         <i class="fa-solid fa-calendar-check"></i>
         <span>BOOKING</span>
@@ -906,6 +1049,8 @@
       </button>
     </div>
   </nav>
+
+  <div id="google_translate_element" aria-hidden="true"></div>
 
   <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
@@ -1390,6 +1535,91 @@
         navbar.classList.remove('scrolled');
       }
     }, { passive: true });
+
+    /* Google Translate language menu (20 languages, matching DJ Double H). */
+    const LANGUAGES = [
+      { code: 'vi', name: 'Tiếng Việt', flag: '🇻🇳', label: 'VI' },
+      { code: 'en', name: 'English', flag: '🇬🇧', label: 'EN' },
+      { code: 'zh-CN', name: '简体中文', flag: '🇨🇳', label: 'CN' },
+      { code: 'zh-TW', name: '繁體中文', flag: '🇹🇼', label: 'TW' },
+      { code: 'ja', name: '日本語', flag: '🇯🇵', label: 'JA' },
+      { code: 'ko', name: '한국어', flag: '🇰🇷', label: 'KO' },
+      { code: 'ru', name: 'Русский', flag: '🇷🇺', label: 'RU' },
+      { code: 'fr', name: 'Français', flag: '🇫🇷', label: 'FR' },
+      { code: 'de', name: 'Deutsch', flag: '🇩🇪', label: 'DE' },
+      { code: 'es', name: 'Español', flag: '🇪🇸', label: 'ES' },
+      { code: 'th', name: 'ภาษาไทย', flag: '🇹🇭', label: 'TH' },
+      { code: 'id', name: 'Indonesia', flag: '🇮🇩', label: 'ID' },
+      { code: 'ms', name: 'Melayu', flag: '🇲🇾', label: 'MS' },
+      { code: 'it', name: 'Italiano', flag: '🇮🇹', label: 'IT' },
+      { code: 'pt', name: 'Português', flag: '🇵🇹', label: 'PT' },
+      { code: 'ar', name: 'العربية', flag: '🇸🇦', label: 'AR' },
+      { code: 'hi', name: 'हिन्दी', flag: '🇮🇳', label: 'HI' },
+      { code: 'tr', name: 'Türkçe', flag: '🇹🇷', label: 'TR' },
+      { code: 'nl', name: 'Nederlands', flag: '🇳🇱', label: 'NL' },
+      { code: 'pl', name: 'Polski', flag: '🇵🇱', label: 'PL' }
+    ];
+
+    function getActiveLanguage() {
+      const match = document.cookie.match(/(?:^|;\s*)googtrans=\/(?:auto|vi)\/([a-zA-Z-]+)/);
+      return (match && match[1]) || localStorage.getItem('site_lang') || 'vi';
+    }
+
+    function renderLanguageMenu() {
+      const current = getActiveLanguage();
+      const activeLanguage = LANGUAGES.find(language => language.code === current) || LANGUAGES[0];
+      document.getElementById('langCurr').textContent = activeLanguage.label;
+      document.getElementById('langGrid').innerHTML = LANGUAGES.map(language => `
+        <button type="button" class="lang-item ${language.code === current ? 'active' : ''}" data-code="${language.code}">
+          <span class="flag">${language.flag}</span>
+          <span class="name">${language.name}</span>
+        </button>
+      `).join('');
+      document.querySelectorAll('.lang-item').forEach(button => {
+        button.addEventListener('click', () => applyLanguage(button.dataset.code));
+      });
+    }
+
+    function applyLanguage(code) {
+      if (!LANGUAGES.some(language => language.code === code)) return;
+      localStorage.setItem('site_lang', code);
+      const hostname = window.location.hostname;
+      const cookieValue = `/auto/${code}`;
+      const expiredCookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+      if (code === 'vi') {
+        document.cookie = expiredCookie;
+        if (hostname) {
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${hostname}; path=/;`;
+          document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${hostname}; path=/;`;
+        }
+      } else {
+        document.cookie = `googtrans=${cookieValue}; path=/;`;
+        if (hostname) {
+          document.cookie = `googtrans=${cookieValue}; domain=${hostname}; path=/;`;
+          document.cookie = `googtrans=${cookieValue}; domain=.${hostname}; path=/;`;
+        }
+      }
+      window.location.reload();
+    }
+
+    const langWrap = document.getElementById('langWrap');
+    document.getElementById('langBtn').addEventListener('click', event => {
+      event.stopPropagation();
+      langWrap.classList.toggle('open');
+    });
+    document.addEventListener('click', event => {
+      if (!langWrap.contains(event.target)) langWrap.classList.remove('open');
+    });
+    renderLanguageMenu();
+
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'vi',
+        includedLanguages: LANGUAGES.map(language => language.code).join(','),
+        autoDisplay: false
+      }, 'google_translate_element');
+    }
   </script>
+  <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit" async defer></script>
 </body>
 </html>
