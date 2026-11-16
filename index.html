@@ -880,6 +880,41 @@
       gap: 20px;
       box-shadow: 0 25px 60px rgba(0,0,0,0.6);
     }
+    .booking-socials {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .booking-social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      min-height: 58px;
+      padding: 14px 12px;
+      border: 1px solid var(--border2);
+      border-radius: 14px;
+      background: var(--card);
+      color: rgba(255,255,255,.72);
+      font-family: var(--ff-mono);
+      font-size: .65rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: all .25s ease;
+    }
+    .booking-social-link i {
+      color: var(--accent);
+      font-size: 1rem;
+    }
+    .booking-social-link:hover {
+      border-color: var(--accent);
+      background: rgba(255, 30, 56, .12);
+      color: #fff;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 28px rgba(0,0,0,.35);
+    }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
     .form-label { font-size: 10px; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); }
@@ -1182,6 +1217,14 @@
         padding: 20px 16px;
         gap: 16px;
         border-radius: 18px;
+      }
+      .booking-socials {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .booking-social-link {
+        min-height: 52px;
+        font-size: .58rem;
       }
       .form-row { gap: 16px; }
       .form-input,
@@ -1621,54 +1664,34 @@
     </div>
   </section>
 
-  <!-- ═══════════════════════════════════════ BOOKING FORM -->
+  <!-- ═══════════════════════════════════════ BOOKING / SOCIAL LINKS -->
   <section class="section section-alt" id="booking">
     <div class="container">
       <div class="booking-wrap">
         <div class="booking-header">
           <span class="section-label">Direct Contact & Enquiries</span>
           <h2 class="section-title">Book DJ PUK<br>Cho Sự Kiện</h2>
-          <p>Nhận booking biểu diễn cho Club, Lounge, Beach Bar, Sự kiện Doanh Nghiệp, Đám cưới cao cấp và Festival âm nhạc.</p>
+          <p>Liên hệ và theo dõi DJ PUK qua các kênh mạng xã hội.</p>
         </div>
 
-        <form class="booking-form" onsubmit="event.preventDefault(); this.querySelector('.form-submit').textContent='✓ Đã gửi thành công!'; setTimeout(()=>this.reset(), 2000)">
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Họ & Tên / Đơn vị</label>
-              <input class="form-input" type="text" required placeholder="Nguyễn Văn A">
-            </div>
-            <div class="form-group">
-              <label class="form-label">Số điện thoại</label>
-              <input class="form-input" type="tel" required placeholder="09xx xxx xxx">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label class="form-label">Loại hình sự kiện</label>
-              <select class="form-select">
-                <option>Club / Lounge Residency</option>
-                <option>Beach Bar / Sunset Party</option>
-                <option>Music Festival / Đại nhạc hội</option>
-                <option>Beer Club / Tiệc ngoài trời</option>
-                <option>Private Party / Sinh nhật / Đám cưới</option>
-              </select>
-            </div>
-            <div class="form-group">
-              <label class="form-label">Địa điểm & Ngày dự kiến</label>
-              <input class="form-input" type="text" placeholder="TP.HCM / Phú Quốc, ngày...">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label">Chi tiết yêu cầu biểu diễn</label>
-            <textarea class="form-textarea" placeholder="Thời lượng set nhạc, phong cách mong muốn, thiết bị sân khấu sẵn có..."></textarea>
-          </div>
-
-          <button type="submit" class="form-submit">
-            <i class="fa-solid fa-paper-plane"></i> &nbsp; Gửi Yêu Cầu Booking
-          </button>
-        </form>
+        <div class="booking-socials" aria-label="DJ PUK social links">
+          <a href="#" class="booking-social-link" title="Facebook">
+            <i class="fa-brands fa-facebook-f" aria-hidden="true"></i>
+            <span>Facebook</span>
+          </a>
+          <a href="#" class="booking-social-link" title="Instagram">
+            <i class="fa-brands fa-instagram" aria-hidden="true"></i>
+            <span>Instagram</span>
+          </a>
+          <a href="#" class="booking-social-link" title="TikTok">
+            <i class="fa-brands fa-tiktok" aria-hidden="true"></i>
+            <span>TikTok</span>
+          </a>
+          <a href="#" class="booking-social-link" title="SoundCloud">
+            <i class="fa-brands fa-soundcloud" aria-hidden="true"></i>
+            <span>SoundCloud</span>
+          </a>
+        </div>
       </div>
     </div>
   </section>
