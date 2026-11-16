@@ -992,6 +992,241 @@
       .booking-form { padding: 24px 20px; }
       .footer-inner { flex-direction: column; text-align: center; }
     }
+
+    /* Mobile polish: keep every control and content block inside the viewport. */
+    @media (max-width: 768px) {
+      html,
+      body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+      }
+
+      nav#navbar,
+      nav#navbar.scrolled {
+        padding: max(10px, env(safe-area-inset-top)) 12px 10px;
+      }
+      .nav-actions {
+        gap: 6px;
+        margin-left: auto;
+      }
+      .bgm-btn {
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        padding: 0;
+      }
+      .bgm-btn .bgm-text,
+      .nav-booking-btn span {
+        display: none;
+      }
+      .nav-booking-btn,
+      .lang-btn {
+        width: 40px;
+        height: 40px;
+        justify-content: center;
+        padding: 0;
+      }
+      .nav-booking-btn i { margin: 0; }
+      .lang-btn { gap: 0; }
+      .lang-btn .lang-arrow { display: none; }
+      .lang-dropdown {
+        position: fixed;
+        top: 64px;
+        right: 12px;
+        width: min(300px, calc(100vw - 24px));
+        max-height: calc(100svh - 78px);
+        padding: 12px;
+      }
+      .lang-grid { max-height: calc(100svh - 150px); }
+      .lang-item { min-height: 42px; }
+
+      #hero {
+        min-height: 100svh;
+        padding: 0 16px max(24px, env(safe-area-inset-bottom));
+      }
+      .hero-bg video {
+        object-position: 52% center;
+      }
+      .hero-content {
+        width: 100%;
+        padding: 0 4px;
+      }
+      .hero-tag {
+        max-width: 100%;
+        margin-bottom: 8px;
+        font-size: .58rem;
+        letter-spacing: .14em;
+        gap: 8px;
+      }
+      .hero-tag::before { width: 20px; }
+      .hero-logo-img {
+        width: min(58vw, 220px);
+        max-width: 100%;
+      }
+      .hero-sub { margin-top: 10px; gap: 4px; }
+      .hero-sub-text {
+        max-width: 100%;
+        font-size: .6rem;
+        letter-spacing: .1em;
+        line-height: 1.65;
+      }
+      .ticker { padding: 9px 0; }
+      .ticker-inner span {
+        padding: 0 14px;
+        font-size: .9rem;
+        letter-spacing: .12em;
+      }
+
+      #about {
+        padding: 68px 16px;
+        gap: 72px;
+      }
+      .about-row,
+      .about-reverse {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+      .about-reverse { flex-direction: column-reverse; }
+      .about-img-wrap,
+      .about-reverse .about-img-wrap,
+      .about-row:not(.about-reverse) .about-img-wrap {
+        width: min(100%, 360px);
+        margin: 0 auto;
+      }
+      .about-img-wrap::before {
+        top: -10px;
+        left: -10px;
+        right: 10px;
+        bottom: 10px;
+      }
+      .about-reverse .about-img-wrap::before {
+        top: -10px;
+        right: -10px;
+        left: 10px;
+        bottom: 10px;
+      }
+      .about-text h2 {
+        font-size: clamp(2.4rem, 12vw, 4rem);
+        line-height: .95;
+        margin-bottom: 18px;
+      }
+      .about-quote {
+        padding: 13px 15px;
+        margin-bottom: 18px;
+        font-size: .88rem;
+        line-height: 1.6;
+      }
+      .about-text p {
+        font-size: .88rem;
+        line-height: 1.75;
+        margin-bottom: 14px;
+      }
+      .about-tags { margin-top: 20px; }
+      .about-tags span {
+        padding: 6px 10px;
+        font-size: .56rem;
+        letter-spacing: .1em;
+      }
+
+      .container { padding: 0 16px; }
+      .section { padding: 68px 0; }
+      .section-header { margin-bottom: 32px; }
+      .section-label {
+        font-size: .58rem;
+        letter-spacing: .16em;
+      }
+      .section-title {
+        font-size: clamp(1.45rem, 8vw, 2.2rem);
+        line-height: 1.15;
+      }
+      .venues-header {
+        align-items: flex-start;
+        margin-bottom: 26px;
+      }
+      .venues-count {
+        width: 100%;
+        font-size: 12px;
+      }
+      .venues-grid,
+      .specs-grid {
+        gap: 12px;
+      }
+      .venue-card {
+        min-height: 0;
+        padding: 18px 16px;
+      }
+      .venue-num {
+        font-size: .56rem;
+        letter-spacing: .12em;
+      }
+      .venue-name { font-size: 15px; }
+      .venue-desc {
+        font-size: 11px;
+        line-height: 1.65;
+      }
+      .spec-card {
+        padding: 22px 18px;
+        gap: 8px;
+      }
+      .spec-title { font-size: 15px; }
+      .spec-desc { font-size: 11px; }
+
+      .booking-header { margin-bottom: 28px; }
+      .booking-header p {
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .booking-form {
+        padding: 20px 16px;
+        gap: 16px;
+        border-radius: 18px;
+      }
+      .form-row { gap: 16px; }
+      .form-input,
+      .form-select,
+      .form-textarea {
+        min-height: 48px;
+        padding: 12px 13px;
+        font-size: 16px;
+      }
+      .form-textarea { min-height: 120px; }
+      .form-submit {
+        min-height: 50px;
+        padding: 13px;
+        font-size: 11px;
+        letter-spacing: .08em;
+      }
+      .footer { padding: 28px 0; }
+      .footer-meta {
+        max-width: 300px;
+        font-size: 9px;
+        line-height: 1.8;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .nav-actions { gap: 4px; }
+      .bgm-btn,
+      .nav-booking-btn,
+      .lang-btn,
+      .nav-hamburger {
+        width: 36px;
+        height: 36px;
+      }
+      .nav-hamburger span:nth-child(1),
+      .nav-hamburger span:nth-child(3) { width: 16px; }
+      .nav-hamburger span:nth-child(2) { width: 11px; }
+      .hero-logo-img { width: min(54vw, 190px); }
+      .hero-sub-text { font-size: .55rem; }
+      .about-text h2 { font-size: 2.25rem; }
+      .lang-dropdown {
+        top: 58px;
+        right: 8px;
+        width: calc(100vw - 16px);
+      }
+    }
   </style>
 </head>
 <body>
